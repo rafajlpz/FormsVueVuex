@@ -1,11 +1,10 @@
 <template>
-  <form @submit.prevent="darAlta">
-    {{dameNombreCientifico}}
+  <form @submit.prevent="procesarFormulario">
     <input
       type="text"
       class="form-control my-2"
       placeholder="Ingrese nombre"
-      v-model="especie.nombre"
+      v-model.trim="especie.nombre"
     />
     <div class="form-check form-check-inlin">
       <input
@@ -30,33 +29,44 @@
 
     <div class="mt-2">
       <div class="form-check form-check-inlin">
-        <input 
-        type="radio" 
-        id="radio-1" 
-        class="form-check-label"
-        value="quercus"
-        v-model="especie.tipo"
+        <input
+          type="radio"
+          id="radio-1"
+          class="form-check-label"
+          value="quercus"
+          v-model="especie.tipo"
         />
         <label for="radio-1" value="">Robur</label>
       </div>
 
       <div class="form-check form-check-inlin">
-        <input 
-        type="radio" 
-        id="radio-2" 
-        class="form-check-label" 
-        value="pinus"
-        v-model="especie.tipo"
+        <input
+          type="radio"
+          id="radio-2"
+          class="form-check-label"
+          value="pinus"
+          v-model="especie.tipo"
         />
         <label for="radio-2">Pinaster</label>
       </div>
-      <button>Enviar</button>
     </div>
+    <div class="mt-2">
+      <input
+        type="number"
+        class="form-control"
+        v-model.number="especie.numero"
+      />
+    </div>
+    <button
+      class="btn btn-dark mt-2 btn-block"
+      type="submit"
+      :disabled="bloquear"
+    >
+      Enviar
+    </button>
   </form>
   <table>
-    <tr>
-
-    </tr>
+    <tr></tr>
   </table>
   <hr />
   <p>
@@ -68,30 +78,44 @@
 export default {
   name: "Home",
   components: {},
-  props:{
-
-  },
+  props: {},
   data() {
     return {
-      especies: [],
       especie: {
-        genero:"",
-        especie: "",
         nombre: "",
         categorias: [],
-        tipo: ''
+        estado: "",
+        numero: 0,
       },
     };
   },
-  computed:{ //Dentro solo hay funciones que retornan algo
-    dameNombreCientifico(){
-      return `${this.especie.especie} ${this.especie.genero}`
-    }
+  computed: {
+    //Dentro solo hay funciones que retornan algo
+    bloquear() {
+      return this.especie.nombre.trim() === "" ? true : false;
+    },
   },
-  methods:{ //Dentro solo hay funciones, pueden o no retornar algo.
-    darAlta(){
-      alert()
-    }
-  }
+  methods: {
+    //Dentro solo hay funciones, pueden o no retornar algo.
+    darAlta() {
+      alert();
+    },
+    procesarFormulario() {
+      console.log(this.especie);
+      if (this.especie.nombre.trim() === "") {
+        console.log("Campo vacio");
+        return;
+      }
+      console.log("No esta vacio");
+      // Enviar datos
+
+      this.especie = {
+        nombre: "",
+        categorias: [],
+        estado: "",
+        numero: 0,
+      };
+    },
+  },
 };
 </script>
